@@ -12,3 +12,23 @@ AddFortuneBox::~AddFortuneBox()
 {
     delete ui;
 }
+
+void AddFortuneBox::on_cancelButton_clicked()
+{
+    close();
+}
+
+void AddFortuneBox::on_sendButton_clicked()
+{
+    //server QDataStream fortunes << addFortune stuff
+}
+
+void AddFortuneBox::on_lineEdit_editingFinished()
+{
+    addFortune = ui->lineEdit->text();
+}
+
+void AddFortuneBox::on_lineEdit_returnPressed()
+{
+    //same as sendButton_clicked()
+}
