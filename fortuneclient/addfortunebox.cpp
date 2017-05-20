@@ -25,6 +25,12 @@ void AddFortuneBox::on_sendButton_clicked()
     ui->lineEdit->setText("");
     ui->confirmLabel->setText("Fortune Added!"); // need to make this wait until server accepts in case of connection error
     ui->sendButton->setEnabled(false);
+
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_0);
+
+    out << addFortune;
 }
 
 void AddFortuneBox::on_lineEdit_editingFinished()

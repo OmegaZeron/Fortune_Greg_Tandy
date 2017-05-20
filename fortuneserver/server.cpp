@@ -135,3 +135,15 @@ void Server::sendFortune()
     clientConnection->write(block);
     clientConnection->disconnectFromHost();
 }
+
+void Server::addNewFortune()
+{
+    in.startTransaction();
+
+    QString addFortune;
+    in >> addFortune;
+    fortunes << addFortune;
+
+    if (!in.commitTransaction())
+        return;
+}

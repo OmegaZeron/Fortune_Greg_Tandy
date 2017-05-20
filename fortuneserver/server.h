@@ -14,6 +14,7 @@ class Server : public QDialog
 
 public:
     explicit Server(QWidget *parent = Q_NULLPTR);
+    void addNewFortune();
 
 private slots:
     void sessionOpened();
@@ -24,6 +25,7 @@ private:
     QTcpServer *tcpServer;
     QStringList fortunes;
     QNetworkSession *networkSession;
+    QDataStream in;
 };
 
 #endif
