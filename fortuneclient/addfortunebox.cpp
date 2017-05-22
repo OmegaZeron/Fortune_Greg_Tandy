@@ -21,10 +21,21 @@ void AddFortuneBox::on_cancelButton_clicked()
 
 void AddFortuneBox::on_sendButton_clicked()
 {
-    //server QDataStream fortunes << addFortune stuff
-    ui->lineEdit->setText("");
-    ui->confirmLabel->setText("Fortune Added!"); // need to make this wait until server accepts in case of connection error
     ui->sendButton->setEnabled(false);
+    ui->lineEdit->setReadOnly(true);
+    ui->lineEdit->setText("");
+    ui->lineEdit->setPlaceholderText(addFortune);
+
+    // need to make this wait until server accepts in case of connection error
+    ui->lineEdit->setText("");
+    ui->confirmLabel->setText("Fortune Added!");
+    ui->lineEdit->setReadOnly(false);
+    ui->lineEdit->setPlaceholderText("");
+
+    // in case it fails
+    ui->lineEdit->setPlaceholderText("");
+    ui->lineEdit->setText(addFortune);
+    ui->lineEdit->setReadOnly(false);
 
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);

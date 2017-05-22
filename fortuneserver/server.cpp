@@ -48,7 +48,7 @@ Server::Server(QWidget *parent)
     QPushButton *quitButton = new QPushButton(tr("Quit"));
     quitButton->setAutoDefault(false);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
-    connect(tcpServer, &QTcpServer::newConnection, this, &Server::sendFortune);
+    connect(tcpServer, &QTcpServer::newConnection, this, &Server::sendFortune); // this is important
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
