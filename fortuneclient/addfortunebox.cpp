@@ -23,6 +23,8 @@ void AddFortuneBox::on_sendButton_clicked()
 {
     ui->sendButton->setEnabled(false);
     ui->lineEdit->setReadOnly(true);
+
+    on_lineEdit_editingFinished();
     ui->lineEdit->setText("");
     ui->lineEdit->setPlaceholderText(addFortune);
 
@@ -61,6 +63,8 @@ void AddFortuneBox::on_lineEdit_returnPressed()
 //    emit enterEntered();
     ui->sendButton->setEnabled(false);
     ui->lineEdit->setReadOnly(true);
+
+    on_lineEdit_editingFinished();
     ui->lineEdit->setText("");
     ui->lineEdit->setPlaceholderText(addFortune);
 
