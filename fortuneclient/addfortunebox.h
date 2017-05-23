@@ -24,7 +24,10 @@ private slots:
 
     void on_lineEdit_returnPressed();
 
-    void on_lineEdit_textChanged(const QString &arg1);
+    void on_lineEdit_textEdited(const QString &arg1);
+
+signals:
+    void enterEntered();
 
 private:
     Ui::AddFortuneBox *ui;

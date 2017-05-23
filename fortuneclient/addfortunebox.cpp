@@ -27,15 +27,21 @@ void AddFortuneBox::on_sendButton_clicked()
     ui->lineEdit->setPlaceholderText(addFortune);
 
     // need to make this wait until server accepts in case of connection error
-    ui->lineEdit->setText("");
-    ui->confirmLabel->setText("Fortune Added!");
-    ui->lineEdit->setReadOnly(false);
-    ui->lineEdit->setPlaceholderText("");
+    if(0 == 1)
+    {
+        ui->lineEdit->setText("");
+        ui->confirmLabel->setText("Fortune Added!");
+        ui->lineEdit->setReadOnly(false);
+        ui->lineEdit->setPlaceholderText("");
+    }
 
     // in case it fails
-    ui->lineEdit->setPlaceholderText("");
-    ui->lineEdit->setText(addFortune);
-    ui->lineEdit->setReadOnly(false);
+    if(0 == 1)
+    {
+        ui->lineEdit->setPlaceholderText("");
+        ui->lineEdit->setText(addFortune);
+        ui->lineEdit->setReadOnly(false);
+    }
 
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
@@ -51,13 +57,38 @@ void AddFortuneBox::on_lineEdit_editingFinished()
 
 void AddFortuneBox::on_lineEdit_returnPressed()
 {
-    //same as sendButton_clicked()
-    ui->lineEdit->setText("");
-    ui->confirmLabel->setText("Fortune Added!"); // need to make this wait until server accepts in case of connection error
+//    on_sendButton_clicked();
+//    emit enterEntered();
     ui->sendButton->setEnabled(false);
+    ui->lineEdit->setReadOnly(true);
+    ui->lineEdit->setText("");
+    ui->lineEdit->setPlaceholderText(addFortune);
+
+    // need to make this wait until server accepts in case of connection error
+    if(0 == 1)
+    {
+        ui->lineEdit->setText("");
+        ui->confirmLabel->setText("Fortune Added!");
+        ui->lineEdit->setReadOnly(false);
+        ui->lineEdit->setPlaceholderText("");
+    }
+
+    // in case it fails
+    if(0 == 1)
+    {
+        ui->lineEdit->setPlaceholderText("");
+        ui->lineEdit->setText(addFortune);
+        ui->lineEdit->setReadOnly(false);
+    }
+
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_0);
+
+    out << addFortune;
 }
 
-void AddFortuneBox::on_lineEdit_textChanged(const QString &arg1)
+void AddFortuneBox::on_lineEdit_textEdited(const QString &arg1)
 {
     ui->confirmLabel->setText("");
     ui->sendButton->setEnabled(true);
