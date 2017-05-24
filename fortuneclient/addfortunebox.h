@@ -28,6 +28,7 @@ private slots:
 
 signals:
     void enterEntered();
+    void sendNewFortune(QString);
 
 private:
     Ui::AddFortuneBox *ui;

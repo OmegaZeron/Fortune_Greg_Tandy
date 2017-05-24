@@ -21,6 +21,9 @@ public:
     explicit Client(QWidget *parent = Q_NULLPTR);
     AddFortuneBox* AddFortuneBox_ptr = NULL;
 
+public slots:
+    void sendNewFortune(QString);
+
 private slots:
     void requestNewFortune();
     void readFortune();
@@ -28,6 +31,7 @@ private slots:
     void enableGetFortuneButton();
     void sessionOpened();
     void openFortuneSendBox();
+
 
 private:
     QComboBox *hostCombo;

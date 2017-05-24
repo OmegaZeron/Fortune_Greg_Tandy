@@ -45,11 +45,12 @@ void AddFortuneBox::on_sendButton_clicked()
         ui->lineEdit->setReadOnly(false);
     }
 
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_0);
+//    QByteArray block;
+//    QDataStream out(&block, QIODevice::WriteOnly);
+//    out.setVersion(QDataStream::Qt_4_0);
 
-    out << addFortune;
+//    out << addFortune;
+    emit sendNewFortune(addFortune);
 }
 
 void AddFortuneBox::on_lineEdit_editingFinished()
@@ -85,11 +86,11 @@ void AddFortuneBox::on_lineEdit_returnPressed()
         ui->lineEdit->setReadOnly(false);
     }
 
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_0);
+//    QByteArray block;
+//    QDataStream out(&block, QIODevice::WriteOnly);
+//    out.setVersion(QDataStream::Qt_4_0);
 
-    out << addFortune;
+//    out << addFortune;
 }
 
 void AddFortuneBox::on_lineEdit_textEdited(const QString &arg1)

@@ -64,7 +64,7 @@ Client::Client(QWidget *parent)
     connect(hostCombo, &QComboBox::editTextChanged,
             this, &Client::enableGetFortuneButton);
     // gotta assign ptr before next line
-    connect(addFortuneButton, &QAbstractButton::clicked, this, &Client::openFortuneSendBox);
+    connect(addFortuneButton, &QAbstractButton::clicked, this, &Client::openFortuneSendBox); // fortune send box connect
     connect(portLineEdit, &QLineEdit::textChanged,
             this, &Client::enableGetFortuneButton);
     connect(getFortuneButton, &QAbstractButton::clicked,
@@ -124,9 +124,9 @@ Client::Client(QWidget *parent)
     }
 }
 
-void Client::openFortuneSendBox() // openFortuneSendBox(AddFortuneBox* AddFortuneBox_ptr)
+void Client::openFortuneSendBox()
 {
-    AddFortuneBox_ptr->show(); // addFortuneBox_ptr->show();
+    AddFortuneBox_ptr->show();
 }
 
 void Client::requestNewFortune()
@@ -210,4 +210,9 @@ void Client::sessionOpened()
                             "Fortune Server example as well."));
 
     enableGetFortuneButton();
+}
+
+void sendNewFortune(QString addFortune)
+{
+
 }
