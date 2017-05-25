@@ -50,7 +50,9 @@ void AddFortuneBox::on_sendButton_clicked()
 //    out.setVersion(QDataStream::Qt_4_0);
 
 //    out << addFortune;
-    emit sendNewFortune(addFortune);
+
+//    emit sendNewFortune(addFortune);
+    emit sendNewFortune();
 }
 
 void AddFortuneBox::on_lineEdit_editingFinished()

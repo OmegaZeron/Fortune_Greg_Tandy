@@ -15,7 +15,6 @@ class AddFortuneBox : public QWidget
 public:
     explicit AddFortuneBox(QWidget *parent = 0);
     ~AddFortuneBox();
-    AddFortuneBox* AddFortuneBox_ptr = NULL;
 
 private slots:
     void on_cancelButton_clicked();
@@ -30,7 +29,9 @@ private slots:
 
 signals:
     void enterEntered();
-    void sendNewFortune(QString);
+//    void sendNewFortune(QString);
+    void sendNewFortune();
+
 
 private:
     Ui::AddFortuneBox *ui;

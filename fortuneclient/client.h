@@ -23,7 +23,8 @@ public:
     AddFortuneBox* AddFortuneBox_ptr = NULL;
 
 public slots:
-    void sendNewFortune(QString);
+//    void sendNewFortune(QString);
+void sendNewFortune();
 
 private slots:
     void requestNewFortune();
