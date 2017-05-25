@@ -12,6 +12,7 @@ class QLineEdit;
 class QPushButton;
 class QTcpSocket;
 class QNetworkSession;
+class AddFortuneBox; // solved syntax errors, but caused linker errors...
 
 class Client : public QDialog
 {
