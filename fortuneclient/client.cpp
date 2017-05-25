@@ -212,7 +212,7 @@ void Client::sessionOpened()
     enableGetFortuneButton();
 }
 
-void sendNewFortune(QString addFortune)
-{
+//void sendNewFortune(QString addFortune)
+//{
 
-}
+//}

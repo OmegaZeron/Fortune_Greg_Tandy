@@ -93,7 +93,7 @@ void AddFortuneBox::on_lineEdit_returnPressed()
 //    out << addFortune;
 }
 
-void AddFortuneBox::on_lineEdit_textEdited(const QString &arg1)
+void AddFortuneBox::on_lineEdit_textEdited(const QString)
 {
     ui->confirmLabel->setText("");
     ui->sendButton->setEnabled(true);
