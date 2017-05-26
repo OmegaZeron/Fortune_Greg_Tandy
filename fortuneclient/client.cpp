@@ -2,13 +2,13 @@
 #include <QtNetwork>
 
 #include "client.h"
-#include "addfortunebox.h"
 
 Client::Client(QWidget *parent)
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
-    , addFortuneButton(new QPushButton(tr("Add New Fortune")))
+    , addLineEdit(new QLineEdit)
+    , addButton(new QPushButton(tr("Add Fortune")))
     , getFortuneButton(new QPushButton(tr("Get Fortune")))
     , tcpSocket(new QTcpSocket(this))
     , networkSession(Q_NULLPTR)
@@ -44,17 +44,21 @@ Client::Client(QWidget *parent)
     hostLabel->setBuddy(hostCombo);
     QLabel *portLabel = new QLabel(tr("S&erver port:"));
     portLabel->setBuddy(portLineEdit);
+    QLabel *addLabel = new QLabel(tr("Add Fortune:"));
+    addLabel->setBuddy(addLineEdit);
+    successLabel = new QLabel(tr(""));
 
     statusLabel = new QLabel(tr("This examples requires that you run the "
                                 "Fortune Server example as well."));
 
     getFortuneButton->setDefault(true);
     getFortuneButton->setEnabled(false);
+    addButton->setEnabled(false);
 
     QPushButton *quitButton = new QPushButton(tr("Quit"));
 
     QDialogButtonBox *buttonBox = new QDialogButtonBox;
-    buttonBox->addButton(addFortuneButton, QDialogButtonBox::ActionRole);
+    buttonBox->addButton(addButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(getFortuneButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
 
@@ -63,12 +67,16 @@ Client::Client(QWidget *parent)
 
     connect(hostCombo, &QComboBox::editTextChanged,
             this, &Client::enableGetFortuneButton);
-    // gotta assign ptr before next line
-    connect(addFortuneButton, &QAbstractButton::clicked, this, &Client::openFortuneSendBox); // fortune send box connect
     connect(portLineEdit, &QLineEdit::textChanged,
             this, &Client::enableGetFortuneButton);
+    connect(addLineEdit, &QLineEdit::textEdited,
+            this, &Client::enableAddButton);
+    connect(addLineEdit, &QLineEdit::editingFinished,
+            this, &Client::setNewFortune);
     connect(getFortuneButton, &QAbstractButton::clicked,
             this, &Client::requestNewFortune);
+    connect(addButton, &QPushButton::clicked,
+            this, &Client::addNewFortune);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
     connect(tcpSocket, &QIODevice::readyRead, this, &Client::readFortune);
     typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
@@ -95,7 +103,10 @@ Client::Client(QWidget *parent)
     mainLayout->addWidget(portLabel, 1, 0);
     mainLayout->addWidget(portLineEdit, 1, 1);
     mainLayout->addWidget(statusLabel, 2, 0, 1, 2);
-    mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
+    mainLayout->addWidget(successLabel, 3, 0);
+    mainLayout->addWidget(buttonBox, 3, 1, 1, 2);
+    mainLayout->addWidget(addLabel, 4, 0);
+    mainLayout->addWidget(addLineEdit, 4, 1);
 
     setWindowTitle(QGuiApplication::applicationDisplayName());
     portLineEdit->setFocus();
@@ -122,11 +133,6 @@ Client::Client(QWidget *parent)
         statusLabel->setText(tr("Opening network session."));
         networkSession->open();
     }
-}
-
-void Client::openFortuneSendBox()
-{
-    AddFortuneBox_ptr->show();
 }
 
 void Client::requestNewFortune()
@@ -188,7 +194,13 @@ void Client::enableGetFortuneButton()
     getFortuneButton->setEnabled((!networkSession || networkSession->isOpen()) &&
                                  !hostCombo->currentText().isEmpty() &&
                                  !portLineEdit->text().isEmpty());
-
+}
+void Client::enableAddButton()
+{
+    addButton->setEnabled((!networkSession || networkSession->isOpen()) &&
+                          !hostCombo->currentText().isEmpty() &&
+                          !portLineEdit->text().isEmpty() && !addLineEdit->text().isEmpty());
+    successLabel->setText("");
 }
 
 void Client::sessionOpened()
@@ -211,8 +223,26 @@ void Client::sessionOpened()
 
     enableGetFortuneButton();
 }
+void Client::setNewFortune()
+{
+    newFortune = addLineEdit->text();
+}
 
-//void sendNewFortune(QString addFortune)
-//{
+void Client::addNewFortune()
+{
+    QByteArray block;
+    QDataStream out(&block, QIODevice::ReadWrite);
+    out.setVersion(QDataStream::Qt_4_0);
 
-//}
+    out << newFortune;
+
+    QTcpSocket *hostConnection = tcpServer->nextPendingConnection();
+    connect(hostConnection, &QAbstractSocket::disconnected,
+            hostConnection, &QObject::deleteLater);
+
+    hostConnection->write(block);
+    hostConnection->disconnectFromHost();
+
+    successLabel->setText("Success!");
+    addLineEdit->setText("");
+}

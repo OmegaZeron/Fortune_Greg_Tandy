@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QTcpSocket>
 #include <QDataStream>
-#include "addfortunebox.h"
+#include <QTcpServer>
 
 class QComboBox;
 class QLabel;
@@ -12,7 +12,6 @@ class QLineEdit;
 class QPushButton;
 class QTcpSocket;
 class QNetworkSession;
-class AddFortuneBox; // solved syntax errors, but caused linker errors...
 
 class Client : public QDialog
 {
@@ -20,29 +19,31 @@ class Client : public QDialog
 
 public:
     explicit Client(QWidget *parent = Q_NULLPTR);
-    AddFortuneBox* AddFortuneBox_ptr = NULL;
-
-public slots:
-    void sendNewFortune(QString);
 
 private slots:
     void requestNewFortune();
+    void setNewFortune();
+    void addNewFortune();
     void readFortune();
     void displayError(QAbstractSocket::SocketError socketError);
     void enableGetFortuneButton();
+    void enableAddButton();
     void sessionOpened();
-    void openFortuneSendBox();
-
 
 private:
     QComboBox *hostCombo;
     QLineEdit *portLineEdit;
+    QLineEdit *addLineEdit;
+    QPushButton *addButton;
     QLabel *statusLabel;
-    QPushButton *addFortuneButton;
+    QLabel *successLabel;
     QPushButton *getFortuneButton;
+    QString newFortune;
 
+    QTcpServer *tcpServer;
     QTcpSocket *tcpSocket;
     QDataStream in;
+    QDataStream out;
     QString currentFortune;
 
     QNetworkSession *networkSession;
