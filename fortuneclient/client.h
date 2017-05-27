@@ -11,6 +11,7 @@ class QLabel;
 class QLineEdit;
 class QPushButton;
 class QTcpSocket;
+class QTcpServer;
 class QNetworkSession;
 
 class Client : public QDialog
@@ -47,6 +48,7 @@ private:
     QString currentFortune;
 
     QNetworkSession *networkSession;
+    int fortuneStop = 0;
 };
 
 #endif

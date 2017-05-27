@@ -49,6 +49,7 @@ Server::Server(QWidget *parent)
     quitButton->setAutoDefault(false);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
     connect(tcpServer, &QTcpServer::newConnection, this, &Server::sendFortune); // this is important
+    connect(tcpServer, &QTcpServer::newConnection, this, &Server::addNewFortune);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
@@ -123,7 +124,7 @@ void Server::sessionOpened()
 void Server::sendFortune()
 {
     QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
+    QDataStream out(&block, QIODevice::ReadWrite);
     out.setVersion(QDataStream::Qt_4_0);
 
     out << fortunes.at(qrand() % fortunes.size());
@@ -142,7 +143,10 @@ void Server::addNewFortune()
 
     QString addFortune;
     in >> addFortune;
-    fortunes << addFortune;
+    if (addFortune != "")
+    {
+        fortunes << addFortune;
+    }
 
     if (!in.commitTransaction())
         return;

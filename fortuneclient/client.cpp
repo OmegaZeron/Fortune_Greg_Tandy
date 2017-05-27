@@ -145,22 +145,26 @@ void Client::requestNewFortune()
 
 void Client::readFortune()
 {
-    in.startTransaction();
+    if (fortuneStop == 0)
+    {
+        in.startTransaction();
 
-    QString nextFortune;
-    in >> nextFortune;
+        QString nextFortune;
+        in >> nextFortune;
 
-    if (!in.commitTransaction())
-        return;
+        if (!in.commitTransaction())
+            return;
 
-    if (nextFortune == currentFortune) {
-        QTimer::singleShot(0, this, &Client::requestNewFortune);
-        return;
+        if (nextFortune == currentFortune) {
+            QTimer::singleShot(0, this, &Client::requestNewFortune);
+            return;
+        }
+
+        currentFortune = nextFortune;
+        statusLabel->setText(currentFortune);
+        getFortuneButton->setEnabled(true);
     }
-
-    currentFortune = nextFortune;
-    statusLabel->setText(currentFortune);
-    getFortuneButton->setEnabled(true);
+    fortuneStop = 0;
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
@@ -230,19 +234,24 @@ void Client::setNewFortune()
 
 void Client::addNewFortune()
 {
+    tcpSocket->abort();
+    tcpSocket->connectToHost(hostCombo->currentText(),
+                             portLineEdit->text().toInt());
     QByteArray block;
     QDataStream out(&block, QIODevice::ReadWrite);
     out.setVersion(QDataStream::Qt_4_0);
 
     out << newFortune;
 
-    QTcpSocket *hostConnection = tcpServer->nextPendingConnection();
-    connect(hostConnection, &QAbstractSocket::disconnected,
-            hostConnection, &QObject::deleteLater);
+// this crashes the program
+//    QTcpSocket *hostConnection = tcpServer->nextPendingConnection();
+//    connect(hostConnection, &QAbstractSocket::disconnected,
+//            hostConnection, &QObject::deleteLater);
 
-    hostConnection->write(block);
-    hostConnection->disconnectFromHost();
+//    hostConnection->write(block);
+//    hostConnection->disconnectFromHost();
 
     successLabel->setText("Success!");
     addLineEdit->setText("");
+    fortuneStop = 1;
 }
