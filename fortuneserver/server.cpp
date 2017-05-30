@@ -117,7 +117,7 @@ void Server::sessionOpened()
     if (ipAddress.isEmpty())
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
     statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
-                            "Run the Fortune Client example now.")
+                            "Run the Fortune Combo example now.")
                          .arg(ipAddress).arg(tcpServer->serverPort()));
 }
 
@@ -129,12 +129,12 @@ void Server::sendFortune()
 
     out << fortunes.at(qrand() % fortunes.size());
 
-    QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
-    connect(clientConnection, &QAbstractSocket::disconnected,
-            clientConnection, &QObject::deleteLater);
+    QTcpSocket *comboConnection = tcpServer->nextPendingConnection();
+    connect(comboConnection, &QAbstractSocket::disconnected,
+            comboConnection, &QObject::deleteLater);
 
-    clientConnection->write(block);
-    clientConnection->disconnectFromHost();
+    comboConnection->write(block);
+    comboConnection->disconnectFromHost();
 }
 
 void Server::addNewFortune()
