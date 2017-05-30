@@ -307,11 +307,11 @@ void Client::setNewFortune()
 
 void Client::addNewFortune()
 {
-    tcpSocket->abort();
-    tcpSocket->connectToHost(hostCombo->currentText(),
-                             portLineEdit->text().toInt());
+//    tcpSocket->abort();
+//    tcpSocket->connectToHost(hostCombo->currentText(), portLineEdit->text().toInt());
+
     QByteArray block;
-    QDataStream out(&block, QIODevice::ReadWrite);
+    QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_0);
 
     out << newFortune;
@@ -319,8 +319,8 @@ void Client::addNewFortune()
 // this crashes the program // added stuff in client.cpp constructor from server.cpp constructor to try to make it work
     QTcpSocket *hostConnection = tcpServer->nextPendingConnection(); // this line works now at least...
     QObject::connect(hostConnection, &QAbstractSocket::disconnected, hostConnection, &QObject::deleteLater);
-//    hostConnection->write(block);
-//    hostConnection->disconnectFromHost();
+    hostConnection->write(block);
+    hostConnection->disconnectFromHost();
 
     successLabel->setText("Success!");
     addLineEdit->setText("");

@@ -124,7 +124,7 @@ void Server::sessionOpened()
 void Server::sendFortune()
 {
     QByteArray block;
-    QDataStream out(&block, QIODevice::ReadWrite);
+    QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_0);
 
     out << fortunes.at(qrand() % fortunes.size());
