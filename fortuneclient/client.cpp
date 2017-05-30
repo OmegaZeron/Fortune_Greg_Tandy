@@ -295,9 +295,10 @@ void Client::sessionOpened()
     // if we did not find one, use IPv4 localhost
     if (ipAddress.isEmpty())
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-    statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
-                            "Run the Fortune Client example now.")
-                         .arg(ipAddress).arg(tcpServer->serverPort()));
+    // copied from server.cpp - commented out the display text for ip address and port info
+//    statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
+//                            "Run the Fortune Client example now.")
+//                         .arg(ipAddress).arg(tcpServer->serverPort()));
 }
 void Client::setNewFortune()
 {
@@ -317,8 +318,7 @@ void Client::addNewFortune()
 
 // this crashes the program // added stuff in client.cpp constructor from server.cpp constructor to try to make it work
     QTcpSocket *hostConnection = tcpServer->nextPendingConnection(); // this line works now at least...
-    connect(hostConnection, &QAbstractSocket::disconnected,
-            hostConnection, &QObject::deleteLater);
+    QObject::connect(hostConnection, &QAbstractSocket::disconnected, hostConnection, &QObject::deleteLater);
 //    hostConnection->write(block);
 //    hostConnection->disconnectFromHost();
 
