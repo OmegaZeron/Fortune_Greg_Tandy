@@ -165,6 +165,8 @@ Client::Client(QWidget *parent)
 
 void Client::requestNewFortune()
 {
+    addLineEdit->setPlaceholderText(tempFortune);
+    addLineEdit->setText("");
     getFortuneButton->setEnabled(false);
     tcpSocket->abort();
     tcpSocket->connectToHost(hostCombo->currentText(),
@@ -193,6 +195,8 @@ void Client::readFortune()
         getFortuneButton->setEnabled(true);
     }
     fortuneStop = 0;
+    addLineEdit->setText(tempFortune);
+    addLineEdit->setPlaceholderText("");
 }
 
 void Client::displayError(QAbstractSocket::SocketError socketError)
@@ -303,6 +307,7 @@ void Client::sessionOpened()
 void Client::setNewFortune()
 {
     newFortune = addLineEdit->text();
+    tempFortune = addLineEdit->text();
 }
 
 void Client::addNewFortune()
@@ -319,8 +324,8 @@ void Client::addNewFortune()
 // this crashes the program // added stuff in client.cpp constructor from server.cpp constructor to try to make it work
     QTcpSocket *hostConnection = tcpServer->nextPendingConnection(); // this line works now at least...
     QObject::connect(hostConnection, &QAbstractSocket::disconnected, hostConnection, &QObject::deleteLater);
-    hostConnection->write(block);
-    hostConnection->disconnectFromHost();
+//    hostConnection->write(block);
+//    hostConnection->disconnectFromHost();
 
     successLabel->setText("Success!");
     addLineEdit->setText("");

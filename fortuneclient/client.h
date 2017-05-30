@@ -40,6 +40,7 @@ private:
     QLabel *successLabel;
     QPushButton *getFortuneButton;
     QString newFortune;
+    QString tempFortune;
 
     QTcpServer *tcpServer;
     QTcpSocket *tcpSocket;
