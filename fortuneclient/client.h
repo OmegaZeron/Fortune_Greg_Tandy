@@ -40,7 +40,7 @@ private:
     QLabel *successLabel;
     QPushButton *getFortuneButton;
     QString newFortune;
-    QString tempFortune;
+    QString tempFortune; // used to set placeholder text in addLineEdit when requestFortune() happens so it sends an empty string, which is ignored in server
 
     QTcpServer *tcpServer;
     QTcpSocket *tcpSocket;
@@ -49,7 +49,7 @@ private:
     QString currentFortune;
 
     QNetworkSession *networkSession;
-    int fortuneStop = 0;
+    int fortuneStop = 0; // used as a flag to stop readFortune() if the add fortune button is pressed
 };
 
 #endif
