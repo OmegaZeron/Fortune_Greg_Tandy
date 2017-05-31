@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "client.h"
 
-Client::Client(QWidget *parent)
+Client::Client(QWidget *parent) // much of this code is kept from the original, and compounded with server.cpp code for sending functionality
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
@@ -126,7 +126,7 @@ Client::Client(QWidget *parent)
             config = manager.defaultConfiguration();
         }
 
-        networkSession = new QNetworkSession(config, this);
+        networkSession = new QNetworkSession(config, this); // networkSession pointer assigned an address here to work with
         connect(networkSession, &QNetworkSession::opened, this, &Client::sessionOpened);
 
         getFortuneButton->setEnabled(false);
@@ -276,10 +276,11 @@ void Client::addNewFortune()
 // this crashes the program // added stuff in client.cpp constructor from server.cpp constructor to try to make it work
     QTcpSocket *hostConnection = tcpServer->nextPendingConnection(); // this line works now at least...
     qDebug() << tcpServer->isListening();
-    QObject::connect(hostConnection, &QAbstractSocket::disconnected, hostConnection, &QObject::deleteLater);
+    QObject::connect(hostConnection, &QAbstractSocket::disconnected, hostConnection, &QObject::deleteLater); // not sure if this works or not
     qDebug() << tcpServer->isListening();
-    hostConnection->write(block);
-    hostConnection->disconnectFromHost();
+    // Visual Studios 2015 Debugger gives an error for these lines: "Read access violation"
+    hostConnection->write(block); // PROGRAM BREAKS HERE, trying to send to server
+    hostConnection->disconnectFromHost(); // PROGRAM BREAKS HERE, trying to disconnect from server
 
     successLabel->setText("Success!");
     addLineEdit->setText("");

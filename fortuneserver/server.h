@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+// forward declarations, or else Qt will complain
 class QLabel;
 class QPushButton;
 class QTcpServer;
@@ -18,7 +19,8 @@ public:
 private slots:
     void sessionOpened();
     void sendFortune();
-    void addNewFortune();
+    void addNewFortune(); // new added functionality to server.cpp to receive from client.cpp
+
 private:
     QLabel *statusLabel;
     QTcpServer *tcpServer;

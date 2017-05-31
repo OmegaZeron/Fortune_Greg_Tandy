@@ -137,6 +137,7 @@ void Server::sendFortune()
     clientConnection->disconnectFromHost();
 }
 
+// new added functionality to server.cpp to receive from client.cpp
 void Server::addNewFortune()
 {
     in.startTransaction();

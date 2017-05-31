@@ -2,10 +2,11 @@
 #define CLIENT_H
 
 #include <QDialog>
-#include <QTcpSocket>
-#include <QDataStream>
-#include <QTcpServer>
+#include <QTcpSocket> // for receiving from the server
+#include <QDataStream> // for communicating with the server
+#include <QTcpServer> // for sending to the server
 
+// forward declarations, or else Qt will complain
 class QComboBox;
 class QLabel;
 class QLineEdit;
@@ -22,14 +23,14 @@ public:
     explicit Client(QWidget *parent = Q_NULLPTR);
 
 private slots:
-    void requestNewFortune();
-    void setNewFortune();
-    void addNewFortune();
+    void requestNewFortune(); // sends a request for a new fortune from the server
+    void setNewFortune(); // sets the new fortune
+    void addNewFortune(); // adds a new fortune, to be sent to the server
     void readFortune();
     void displayError(QAbstractSocket::SocketError socketError);
-    void enableGetFortuneButton();
-    void enableAddButton();
-    void sessionOpened();
+    void enableGetFortuneButton(); // allows the requestNewFortune button to work
+    void enableAddButton(); // allows the addNewFortune button to work
+    void sessionOpened(); // called whenever a network connection session is opened
 
 private:
     QComboBox *hostCombo;
