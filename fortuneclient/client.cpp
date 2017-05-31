@@ -1,6 +1,6 @@
 #include <QtWidgets>
 #include <QtNetwork>
-
+#include <QDebug>
 #include "client.h"
 
 Client::Client(QWidget *parent)
@@ -252,9 +252,9 @@ void Client::sessionOpened()
     if (ipAddress.isEmpty())
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
     // copied from server.cpp - commented out the display text for ip address and port info
-//    statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
-//                            "Run the Fortune Client example now.")
-//                         .arg(ipAddress).arg(tcpServer->serverPort()));
+    statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2\n\n"
+                            "Run the Fortune Client example now.")
+                         .arg(ipAddress).arg(tcpServer->serverPort()));
 }
 void Client::setNewFortune()
 {
@@ -264,8 +264,8 @@ void Client::setNewFortune()
 
 void Client::addNewFortune()
 {
-//    tcpSocket->abort();
-//    tcpSocket->connectToHost(hostCombo->currentText(), portLineEdit->text().toInt());
+    tcpSocket->abort();
+    tcpSocket->connectToHost(hostCombo->currentText(), portLineEdit->text().toInt());
 
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
@@ -275,9 +275,11 @@ void Client::addNewFortune()
 
 // this crashes the program // added stuff in client.cpp constructor from server.cpp constructor to try to make it work
     QTcpSocket *hostConnection = tcpServer->nextPendingConnection(); // this line works now at least...
+    qDebug() << tcpServer->isListening();
     QObject::connect(hostConnection, &QAbstractSocket::disconnected, hostConnection, &QObject::deleteLater);
-//    hostConnection->write(block);
-//    hostConnection->disconnectFromHost();
+    qDebug() << tcpServer->isListening();
+    hostConnection->write(block);
+    hostConnection->disconnectFromHost();
 
     successLabel->setText("Success!");
     addLineEdit->setText("");
